@@ -1,21 +1,55 @@
-# seb45_pre_011
+# Pre-Project : StackOverflow Clone Coding
 
-프로젝트 간단한 설명 또는 소제목
+코드스테이츠 프리 프로젝트 : 스택오버플로우 클론코딩 by 11조
+
+---
 
 ## 목차
 
 - [프로젝트 소개](#프로젝트-소개)
-- [설치 방법](#설치-방법)
-- [사용 방법](#사용-방법)
-- [기여 방법](#기여-방법)
+- [팀원 소개](#팀원-소개)
+- [기술 스택](#기술-스택)
+- [커밋 규칙](#커밋-규칙)
 - [라이센스](#라이센스)
-- [작성자 정보](#작성자-정보)
+
+---
 
 ## 프로젝트 소개
 
-간단한 프로젝트 소개 및 목적에 대한 설명을 기술합니다.
+스택오버플로우 사이트 기능 구현 클론코딩 프로젝트.
 
-## 설치 방법
+---
 
-프로젝트를 사용하기 위해 필요한 설치 방법을 제공합니다. 설치에 필요한 의존성이나 환경 설정에 대한 정보를 기술합니다.
+## 팀원 소개
 
+---
+
+## 기술 스택
+
+### FE 기술 스택
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
+ <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white">
+ <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"/>
+
+### BE 기술 스택
+
+---
+
+## 커밋 규칙
+
+### FE 커밋 규칙
+작성 예시 : [분류 메시지] "작업내용"  "번호)" "커밋 내용"
+ex) [commit] 로그인 기능 3) 비밀번호 글자수 확인
+
+=> 분류 메시지
+commit: 새로운 기능 추가
+fix: 버그 수정
+docs: 문서 변경
+style: 코드 스타일 변경
+refactor: 코드 리팩토링
+test: 테스트 코드 추가나 수정
+chore: 빌드 관련 작업 또는 도구 설정 변경
+hotfix : 긴급 코드 수정 필요(전원공지 필수)
+
+### BE 커밋 규칙
