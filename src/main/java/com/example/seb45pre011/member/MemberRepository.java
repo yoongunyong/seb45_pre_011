@@ -1,6 +1,5 @@
-package com.example.seb45pre011.member.repository;
+package com.example.seb45pre011.member;
 
-import com.example.seb45pre011.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRepository extends JpaRepository<Member,Long> {

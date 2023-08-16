@@ -1,4 +1,4 @@
-package com.example.seb45pre011.member.entity;
+package com.example.seb45pre011.member;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

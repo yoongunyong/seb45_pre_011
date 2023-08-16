@@ -1,6 +1,6 @@
 package com.example.seb45pre011.comment.entity;
 
-import com.example.seb45pre011.member.entity.Member;
+import com.example.seb45pre011.member.Member;
 import com.example.seb45pre011.post.entity.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
