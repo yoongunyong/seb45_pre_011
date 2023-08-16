@@ -13,9 +13,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/h2/**").permitAll() // H2 데이터베이스 콘솔 접근 허용
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
-                .csrf().disable();
-        http.headers().frameOptions().sameOrigin();
+                .csrf().disable()
+                .headers().frameOptions().sameOrigin(); // H2 데이터베이스 콘솔 사용을 위한 설정
     }
 }
