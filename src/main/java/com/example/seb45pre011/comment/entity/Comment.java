@@ -1,5 +1,7 @@
 package com.example.seb45pre011.comment.entity;
 
+import com.example.seb45pre011.member.entity.Member;
+import com.example.seb45pre011.post.entity.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,18 +21,26 @@ public class Comment {
     private Long commentId;
 
     private String content;
-    @Column(name = "createAt")
+
+    @Column(name = "createdAt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "post_id")
-//    private Post post;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id", referencedColumnName = "post_id", nullable = false)
+    private Post post;
+
+    public Comment(String content) {
+        this.content = content;
+        this.createdAt = new Date();
+    }
+
     @PrePersist
     protected void onCreate() {
-    createdAt = new Date();
+        createdAt = new Date();
     }
 }
