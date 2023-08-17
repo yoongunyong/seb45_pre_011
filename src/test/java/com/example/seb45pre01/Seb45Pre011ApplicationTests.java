@@ -1,4 +1,4 @@
-package com.example.seb45pre011;
+package com.example.seb45pre01;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
