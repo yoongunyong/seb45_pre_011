@@ -58,7 +58,7 @@ public class MemberService {
         findUser.ifPresent(user->{ throw new IllegalArgumentException("이미 가입된 아이디 입니다.");
         });
         if (findUser.isPresent() && findUser.get() != null) {
-            throw new IllegalArgumentException("이미 가입된 아이디 입니다.");
+            throw new Illeggit alArgumentException("이미 가입된 아이디 입니다.");
         }
 
         if (!findUser.isPresent()) {
