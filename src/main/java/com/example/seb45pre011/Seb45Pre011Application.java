@@ -9,5 +9,4 @@ public class Seb45Pre011Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Seb45Pre011Application.class, args);
 	}
-
 }
