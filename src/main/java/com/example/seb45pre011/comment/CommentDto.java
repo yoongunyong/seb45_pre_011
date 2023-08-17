@@ -1,7 +1,6 @@
-package com.example.seb45pre011.comment.dto;
+package com.example.seb45pre011.comment;
 
-import com.example.seb45pre011.member.Member;
-import com.example.seb45pre011.post.entity.Post;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +36,7 @@ public class CommentDto {
         private long commentId;
         private String content;
         private Date createdAt;
-        private Long memberId;
+        private Long userId;
         private Long postId;
     }
 }
