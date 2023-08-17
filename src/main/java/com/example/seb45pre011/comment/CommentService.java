@@ -1,20 +1,11 @@
-package com.example.seb45pre011.comment.service;
+package com.example.seb45pre011.comment;
 
-import com.example.seb45pre011.comment.entity.Comment;
-import com.example.seb45pre011.comment.mapper.CommentMapper;
-import com.example.seb45pre011.comment.repository.CommentRepository;
 import com.example.seb45pre011.exception.BusinessLogicException;
 import com.example.seb45pre011.exception.ExceptionCode;
-import com.example.seb45pre011.post.entity.Post;
-import org.springframework.data.domain.Page;
+import com.example.seb45pre011.post.Post;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

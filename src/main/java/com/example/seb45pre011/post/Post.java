@@ -1,5 +1,6 @@
 package com.example.seb45pre011.post;
 
+import com.example.seb45pre011.comment.Comment;
 import com.example.seb45pre011.tag.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

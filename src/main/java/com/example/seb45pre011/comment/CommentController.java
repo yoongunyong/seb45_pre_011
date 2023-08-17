@@ -1,17 +1,10 @@
-package com.example.seb45pre011.comment.controller;
+package com.example.seb45pre011.comment;
 
-import com.example.seb45pre011.comment.dto.CommentDto;
-import com.example.seb45pre011.comment.entity.Comment;
-import com.example.seb45pre011.comment.mapper.CommentMapper;
-import com.example.seb45pre011.comment.service.CommentService;
-import com.example.seb45pre011.post.entity.Post;
-import com.example.seb45pre011.post.repository.PostRepository;
-import com.example.seb45pre011.post.service.PostService;
+import com.example.seb45pre011.post.Post;
+import com.example.seb45pre011.post.PostService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +20,7 @@ public class CommentController {
     private final PostService postService;
     private final CommentMapper mapper;
 
-    public CommentController(CommentService commentService, PostService postService, PostRepository postRepository, CommentMapper mapper) {
+    public CommentController(CommentService commentService, PostService postService, CommentMapper mapper) {
         this.commentService = commentService;
         this.postService = postService;
         this.mapper = mapper;
@@ -38,7 +31,7 @@ public class CommentController {
             @PathVariable("post-id") Long postId,
             @RequestBody CommentDto.PostDto postDto){
         // 존재하는 post인지 확인
-        Post post = postService.findVerifiedPost(postId);
+        Post post = postService.getPostById(postId);
         Comment comment = commentService.createComment(post,mapper.commentPostDtoToComment(postDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.commentToResponseDTO(comment));
     }
@@ -74,8 +67,8 @@ public class CommentController {
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
        // TODO 게시글의 댓글을 무한 스크롤로 가져오는 기능
         // TODO 추가 구현 사항 -> 답변 정보에 userID 담기
-        postService.findVerifiedPost(postId);
-        List<Comment> comments= commentService.findComments(postId,cursor,pageSize);
+        Post post = postService.getPostById(postId);
+        List<Comment> comments= commentService.findComments(post.getPostId(),cursor,pageSize);
         Long nextCursor = null;
         // 댓글이 있고, 받아온 댓글의 양이 pageSize보다 클 때,
         if (!comments.isEmpty() && comments.size() >= pageSize) {
