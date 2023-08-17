@@ -31,9 +31,10 @@ public class CommentService {
         newComment.setPost(post);
         return commentRepository.save(newComment);
     }
-    public Comment updateComment(Comment comment){
+    public Comment updateComment(Long commentId,Comment comment){
         //  존재하는 댓글인지 확인
-        Comment findComment = findVerifiedComment(comment.getCommentId());
+        Comment findComment = findVerifiedComment(commentId);
+        findComment.setCommentId(commentId);
         findComment.setContent(comment.getContent());
         return commentRepository.save(findComment);
     }
@@ -41,9 +42,16 @@ public class CommentService {
         Comment comment = findVerifiedComment(commentId);
         commentRepository.delete(comment);
     }
-    public List<Comment> findComments(Long cursor, int pageSize)  {
-        return null;
+    public List<Comment> findComments(Long postId, Long cursor, int pageSize)  {
+        List<Comment> foundComments;
+        if (cursor == null) {
+            foundComments = commentRepository.findByPost_PostIdOrderByCommentId(postId, PageRequest.of(0, pageSize));
+        } else {
+            foundComments = commentRepository.findCommentsByPost_PostIdAndCommentIdGreaterThan(postId, cursor, PageRequest.of(0, pageSize));
+        }
+        return foundComments;
     }
+
     public Comment findVerifiedComment(long commentId) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         Comment findComment =
@@ -51,15 +59,7 @@ public class CommentService {
                         new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
         return findComment;
     }
-//    public void reorganizeCommentIds(Long postId) {
-//        List<Comment> comments = commentRepository.findByPostIdOrderByCreatedAt(postId);
-//        int newId = 1;
-//
-//        for (Comment comment : comments) {
-//            comment.setId((long) newId++);
-//            commentRepository.save(comment);
-//        }
-//    }
+
     public List<Comment> getCommentsByPostId(Long postId) {
         return commentRepository.findByPost_PostIdOrderByCreatedAt(postId);
     }
