@@ -2,11 +2,11 @@ package com.example.seb45pre011;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-public class Seb45Pre011Application {
-
+public class Seb45pre011Application {
 	public static void main(String[] args) {
-		SpringApplication.run(Seb45Pre011Application.class, args);
+		SpringApplication.run(Seb45pre011Application.class, args);
 	}
 }

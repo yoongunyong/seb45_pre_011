@@ -37,10 +37,5 @@ public class MemberController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(jwtToken);
-
-
-
-
-
     }
 }

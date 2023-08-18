@@ -39,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/h2/**").permitAll()// H2 데이터베이스 콘솔 접근 허용
+                .antMatchers("/mypage/**").hasAnyRole("USER","ADMIN")   // 인증된 사용자만 접근 가능한 경로
                 .anyRequest().authenticated()
                 .and()
                 .cors().disable()
@@ -49,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
     }
+
 
     @Override
     public void configure (WebSecurity web) throws Exception {

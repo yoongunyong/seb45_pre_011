@@ -1,6 +1,7 @@
 package com.example.seb45pre011.post;
 
 import com.example.seb45pre011.comment.Comment;
+import com.example.seb45pre011.member.Member;
 import com.example.seb45pre011.tag.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,9 +47,9 @@ public class Post {
           inverseJoinColumns = @JoinColumn(name = "tag_id"))
   private Set<Tag> tags = new HashSet<>();
 
-//  @ManyToMany
-//  @JoinColumn(name = "user_id")
-//  private User user;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private Member member;
 //
 //  @OneToMany(mappedBy = "post")
 //  private Set<Comment> comments = new HashSet<>();
