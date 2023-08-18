@@ -1,13 +1,11 @@
 package com.example.seb45pre011.post;
 
-import com.example.seb45pre011.comment.Comment;
 import com.example.seb45pre011.member.Member;
 import com.example.seb45pre011.tag.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

@@ -1,7 +1,6 @@
 package com.example.seb45pre011;
 
 import com.example.seb45pre011.comment.CommentRepository;
-import com.example.seb45pre011.member.Member;
 import com.example.seb45pre011.member.MemberRepository;
 import com.example.seb45pre011.post.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;

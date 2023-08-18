@@ -1,21 +1,14 @@
 package com.example.seb45pre011.member;
 
-import com.example.seb45pre011.comment.Comment;
 import com.example.seb45pre011.exception.BusinessLogicException;
 import com.example.seb45pre011.exception.ExceptionCode;
 import com.example.seb45pre011.security.JwtProvider;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Base64;
-import java.util.Collections;
 import java.util.Optional;
 
 @Service

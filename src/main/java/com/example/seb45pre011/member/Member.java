@@ -3,20 +3,16 @@ package com.example.seb45pre011.member;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import java.util.stream.Collectors;
-
-
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @AllArgsConstructor

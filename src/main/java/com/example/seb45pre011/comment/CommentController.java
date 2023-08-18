@@ -9,8 +9,6 @@ import com.example.seb45pre011.post.PostService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +33,7 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity postComment(
+    public ResponseEntity<CommentDto.Response> postComment(
             @PathVariable("post-id") Long postId,
             @RequestBody CommentDto.PostDto postDto){
         Member author = memberService.getUserByAuthentication();
@@ -45,7 +43,7 @@ public class CommentController {
         if(post == null)
             throw new BusinessLogicException(ExceptionCode.POST_NOT_FOUND);
         Comment comment = commentService.createComment(author,post,mapper.commentPostDtoToComment(postDto));
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.commentToResponseDTO(comment));
+        return new ResponseEntity<>(mapper.commentToResponseDTO(comment),HttpStatus.CREATED);
     }
 
     @PatchMapping("/{comment-id}")
@@ -106,7 +104,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{comment-id}")
-    public ResponseEntity deleteComment(
+    public ResponseEntity<String> deleteComment(
             @PathVariable("post-id") Long postId,
             @PathVariable("comment-id") Long commentId){
         // TODO 글을 작성한 유저 or 관리자인지 판별 후 로직 진행
