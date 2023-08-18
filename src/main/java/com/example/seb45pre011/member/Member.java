@@ -1,12 +1,17 @@
 package com.example.seb45pre011.member;
 
 
+import com.example.seb45pre011.post.Post;
 import lombok.*;
+import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 
@@ -51,16 +56,22 @@ public class Member implements UserDetails {
     private LocalDateTime createAt = LocalDateTime.now();
 
     @Setter(AccessLevel.NONE)
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles = new ArrayList<>();
+    @Column
+    private String roles;
+
+//    @OneToMany(mappedBy = "member")
+//    private List<Post> posts;
+//
+//    @OneToMany(mappedBy = "member")
+//    private List<Comment> comments;
 
 
     public void setRoles(String email){
-//        if(email.equals()){   //관리자 계정 이메일 넣으면 됨.
-//            roles.add("USER");
-//            roles.add("ADMIN");
-//        }
-        roles.add("USER");
+        if(email.equals("yoongunyong@naver.com")||email.equals("abc@naver.com")){   //관리자 계정 이메일 넣으면 됨.
+            roles = "ADMIN";
+        }else{
+            roles = "USER";
+        }
     }
     @Enumerated(EnumType.STRING)
     @Column
@@ -69,7 +80,7 @@ public class Member implements UserDetails {
 
     @Override   //사용자의 권한 목록 리턴
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
+        return Arrays.stream(this.roles.split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
@@ -107,11 +118,14 @@ public class Member implements UserDetails {
         MEMBER_SLEEP("휴면계정"),
         MEMBER_EXIT("회원탈퇴");
 
-        @Getter
-        private final String status;
+        private String memberStatus;
+
+        private String getMemberStatus(){
+            return memberStatus;
+        }
 
         MemberStatus(String status){
-            this.status = status;
+            this.memberStatus = status;
         }
     }
 

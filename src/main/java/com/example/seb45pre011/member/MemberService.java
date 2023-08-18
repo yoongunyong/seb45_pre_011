@@ -1,5 +1,7 @@
 package com.example.seb45pre011.member;
 
+import com.example.seb45pre011.exception.BusinessLogicException;
+import com.example.seb45pre011.exception.ExceptionCode;
 import com.example.seb45pre011.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +28,6 @@ public class MemberService {
         this.jwtProvider = jwtProvider;
     }
 
-
-
-
-
     public Member createMember(Member member){
         verifyExist(member.getEmail());
         String password = passwordEncoder.encode(member.getPassword());
@@ -50,6 +48,21 @@ public class MemberService {
         }
     }
 
+    public Member resetPassword(Member member){
+        String encodedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encodedPassword);
+        return repository.updatePasswordByEmail(member.getEmail(),member.getPassword());
+    }
+
+    public Member findPassword(Member member){
+        Optional<Member> optionalMember = repository.findByEmailAndUsername(member.getEmail(),member.getUsername());
+        if(optionalMember.isEmpty()){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+        }else{
+            return optionalMember.get();
+        }
+    }
+
 
 
     public void verifyExist(String email) {
@@ -65,4 +78,6 @@ public class MemberService {
             return;
         }
     }
+
+
 }

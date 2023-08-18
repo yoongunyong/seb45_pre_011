@@ -16,3 +16,5 @@ spring:
 jwt:
   password: CodeStatesPreProject11team
   validTime: 1800000
+ADMIN:
+  ADDRESS: yoongunyong@naver.com

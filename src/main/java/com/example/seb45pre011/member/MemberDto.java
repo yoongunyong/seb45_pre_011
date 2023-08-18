@@ -20,4 +20,11 @@ public class MemberDto {
         private String email;
         private String password;
     }
+
+    @Getter
+    public static class patch{
+        private String password;
+        private String phone;
+        private String nick;
+    }
 }
