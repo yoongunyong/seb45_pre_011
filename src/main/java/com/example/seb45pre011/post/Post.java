@@ -47,8 +47,8 @@ public class Post {
   private Set<Tag> tags = new HashSet<>();
 
 //  @ManyToMany
-//  @JoinColumn(name = "user_id")
-//  private User user;
+//  @JoinColumn(name = "member_id")
+//  private Menber member;
 //
 //  @OneToMany(mappedBy = "post")
 //  private Set<Comment> comments = new HashSet<>();

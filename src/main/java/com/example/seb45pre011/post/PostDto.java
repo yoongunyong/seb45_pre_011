@@ -10,13 +10,6 @@ import java.util.Set;
 @Getter
 @Setter
 public class PostDto {
-  private Long id;
   private String title;
   private String content;
-  private int views;
-  private int likes;
-  private int dislikes;
-  private int reports;
-  private LocalDateTime createdAt;
-  private Set<Tag> tags;
 }
