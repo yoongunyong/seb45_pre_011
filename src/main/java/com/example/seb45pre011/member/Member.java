@@ -1,12 +1,15 @@
 package com.example.seb45pre011.member;
 
 
+import com.example.seb45pre011.answer.Answer;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -14,9 +17,6 @@ import java.util.stream.Collectors;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Setter
 @AllArgsConstructor
@@ -114,5 +114,6 @@ public class Member implements UserDetails {
             this.status = status;
         }
     }
-
+    @ManyToMany(mappedBy = "members")
+    private Set<Answer> answers = new HashSet<>();
 }
