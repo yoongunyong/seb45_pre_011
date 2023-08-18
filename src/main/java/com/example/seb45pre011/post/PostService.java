@@ -1,5 +1,7 @@
 package com.example.seb45pre011.post;
 
+import com.example.seb45pre011.member.Member;
+
 import java.util.List;
 
 public interface PostService {
@@ -8,4 +10,5 @@ public interface PostService {
   void deletePost(Long postId);
   Post getPostById(Long postId);
   List<Post> getAllPosts();
+  int getUserPostCount(Member member);
 }

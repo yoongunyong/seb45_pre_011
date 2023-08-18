@@ -1,15 +1,14 @@
 package com.example.seb45pre011.member;
 
+import com.example.seb45pre011.exception.BusinessLogicException;
+import com.example.seb45pre011.exception.ExceptionCode;
 import com.example.seb45pre011.security.JwtProvider;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Base64;
-import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -50,8 +49,13 @@ public class MemberService {
         }
     }
 
-
-
+    public Member findMemberByEmail(String email){
+        Optional<Member> optionalMember = repository.findByEmail(email);
+        Member foundMebmer =
+                optionalMember.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        return foundMebmer;
+    }
     public void verifyExist(String email) {
         Optional<Member> findUser = repository.findByEmail(email);
 
@@ -63,6 +67,21 @@ public class MemberService {
 
         if (!findUser.isPresent()) {
             return;
+        }
+    }
+    public Member getUserByAuthentication(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getName()!= null) {
+            Member userDetails = (Member) authentication.getPrincipal();
+            String email = userDetails.getEmail();
+            Member member = findMemberByEmail(email);
+            if (member == null) {
+                throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+            }
+            return member;
+        } else {
+            System.out.println("No logged-in user found.");
+            return null;
         }
     }
 }
