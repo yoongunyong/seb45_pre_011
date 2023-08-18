@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping
 @RestController
 @CrossOrigin
-@RequiredArgsConstructor
 @Slf4j
 public class MemberController {
 
-    private final MemberMapper mapper;
-    private final MemberService service;
+    private  MemberMapper mapper;
+    private  MemberService service;
+
+    public MemberController(MemberMapper mapper, MemberService service){
+        this.mapper = mapper;
+        this.service = service;
+    }
 
     @PostMapping
     public String test(){

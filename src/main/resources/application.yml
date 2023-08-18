@@ -16,3 +16,12 @@ spring:
 jwt:
   password: CodeStatesPreProject11team
   validTime: 1800000
+
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1036778914352-hf8n4p5v38vbnjp4koc2biqgqfpupp1o.apps.googleusercontent.com
+            client-secret: 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

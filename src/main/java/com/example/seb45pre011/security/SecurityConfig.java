@@ -13,15 +13,24 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.Arrays;
 
 
 @EnableWebSecurity
-@RequiredArgsConstructor
+
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    //    private final CustomOAuth2UserService customOAuth2UserService;
-    private final JwtProvider jwtProvider;
+    private  CustomOAuth2UserService customOAuth2UserService;
+    private  JwtProvider jwtProvider;
+
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,JwtProvider jwtProvider){
+        this.customOAuth2UserService = customOAuth2UserService;
+        this.jwtProvider = jwtProvider;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,17 +46,57 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/h2/**").permitAll()// H2 데이터베이스 콘솔 접근 허용
-                .anyRequest().authenticated()
-                .and()
+        http
                 .cors().disable()
-                .csrf().disable();
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/h2/**").permitAll()
+                .anyRequest().permitAll()
+                .and()
+                .oauth2Login()
+                .loginPage("/loginForm")
+                .defaultSuccessUrl("/")
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService).and().and().build();
+
         http.headers().frameOptions().sameOrigin()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+//        http
+//
+//                .cors().disable()
+//                .csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/h2/**").permitAll()// H2 데이터베이스 콘솔 접근 허용
+//                .anyRequest().permitAll()
+//                .and()
+//                .oauth2Login()
+//                .loginPage("/loginForm")
+//                .defaultSuccessUrl("/")
+//                .userInfoEndpoint()
+//                .userService(customOAuth2UserService).and().and().build();
+//
+//        http.headers().frameOptions().sameOrigin()
+//
+//                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+
+
+
+
+    }
+
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        // OAuth 2.0 클라이언트 등록 정보를 설정하여 반환하는 코드를 작성
+        // 예시: InMemoryClientRegistrationRepository 또는 다른 구현체 사용
+        return new InMemoryClientRegistrationRepository(Arrays.asList(
+                // 클라이언트 등록 정보들을 정의
+        ));
     }
 
     @Override

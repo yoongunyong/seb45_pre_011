@@ -47,6 +47,13 @@ public class Member implements UserDetails {
     @Column(nullable = false)
     private String nick;
 
+    private String provider;
+
+    private String providerId;
+
+//    @Enumerated(EnumType.STRING)
+//    private SocialType socialType;
+
     @CreationTimestamp
     private LocalDateTime createAt = LocalDateTime.now();
 
@@ -114,5 +121,18 @@ public class Member implements UserDetails {
             this.status = status;
         }
     }
-
+//
+//    public enum SocialType{
+//        GOOGLE_LOGIN("구굴"),
+//        GITHUB_LOGIN("깃허브");
+//
+//        @Getter
+//        public final String socialType;
+//
+//        SocialType(String social){
+//            this.socialType = social;
+//        }
 }
+
+
+
