@@ -16,6 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Arrays;
 
@@ -56,8 +61,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2Login()
                 .loginPage("/loginForm")
                 .defaultSuccessUrl("/")
-                .userInfoEndpoint()
-                .userService(customOAuth2UserService).and().and().build();
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessHandler(logoutSuccessHandler())
+                .addLogoutHandler(logoutHandler())
+                .permitAll();
 
         http.headers().frameOptions().sameOrigin()
                 .and()
@@ -88,6 +97,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
+    }
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return new SimpleUrlLogoutSuccessHandler();
+    }
+
+    @Bean
+    public LogoutHandler logoutHandler() {
+        return new SecurityContextLogoutHandler();
     }
 
     @Bean

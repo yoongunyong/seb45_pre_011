@@ -1,5 +1,6 @@
 package com.example.seb45pre011.comment;
 
+import com.example.seb45pre011.member.Member;
 import com.example.seb45pre011.post.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +26,9 @@ public class Comment {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private Member member;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName = "post_id", nullable = false)

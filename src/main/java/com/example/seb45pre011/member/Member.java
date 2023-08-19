@@ -1,6 +1,8 @@
 package com.example.seb45pre011.member;
 
 
+import com.example.seb45pre011.answer.Answer;
+import com.example.seb45pre011.post.Post;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.lang.Nullable;
@@ -47,12 +49,11 @@ public class Member implements UserDetails {
     @Column(nullable = false)
     private String nick;
 
-    private String provider;
+    @OneToMany(mappedBy = "member")
+    private List<Post> post;
 
-    private String providerId;
-
-//    @Enumerated(EnumType.STRING)
-//    private SocialType socialType;
+    @OneToMany(mappedBy = "member")
+    private List<Answer> answers;
 
     @CreationTimestamp
     private LocalDateTime createAt = LocalDateTime.now();
@@ -61,6 +62,16 @@ public class Member implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
+
+//    private String provider;
+//
+//    private String providerId;
+
+//    @Enumerated(EnumType.STRING)
+//    private SocialType socialType;
 
     public void setRoles(String email){
 //        if(email.equals()){   //관리자 계정 이메일 넣으면 됨.
@@ -69,20 +80,12 @@ public class Member implements UserDetails {
 //        }
         roles.add("USER");
     }
-    @Enumerated(EnumType.STRING)
-    @Column
-    private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
-
-
     @Override   //사용자의 권한 목록 리턴
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
-
-
-
     @Override
     public String getUsername() {
         return username;

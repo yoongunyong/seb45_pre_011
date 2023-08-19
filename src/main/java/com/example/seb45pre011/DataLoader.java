@@ -1,7 +1,7 @@
 package com.example.seb45pre011;
 
 import com.example.seb45pre011.comment.CommentRepository;
-import com.example.seb45pre011.post.Post;
+import com.example.seb45pre011.member.MemberRepository;
 import com.example.seb45pre011.post.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,11 +12,13 @@ public class DataLoader implements CommandLineRunner {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public DataLoader(PostRepository postRepository, CommentRepository commentRepository) {
+    public DataLoader(PostRepository postRepository, CommentRepository commentRepository, MemberRepository memberRepository) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -26,5 +28,6 @@ public class DataLoader implements CommandLineRunner {
 //        Post post2 = new Post();
 //        postRepository.save(post1);
 //        postRepository.save(post2);
+        //Member member = new Member();
     }
 }

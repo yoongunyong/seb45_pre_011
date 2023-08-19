@@ -2,6 +2,7 @@ package com.example.seb45pre011.comment;
 
 import com.example.seb45pre011.exception.BusinessLogicException;
 import com.example.seb45pre011.exception.ExceptionCode;
+import com.example.seb45pre011.member.Member;
 import com.example.seb45pre011.post.Post;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,8 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public Comment createComment(Post post, Comment newComment){
+    public Comment createComment(Member member,Post post, Comment newComment){
+        newComment.setMember(member);
         //postID를 통해 댓글 찾기
         newComment.setPost(post);
         return commentRepository.save(newComment);
@@ -45,13 +47,14 @@ public class CommentService {
 
     public Comment findVerifiedComment(long commentId) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
-        Comment findComment =
-                optionalComment.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
-        return findComment;
+        return optionalComment.orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
     }
 
     public List<Comment> getCommentsByPostId(Long postId) {
         return commentRepository.findByPost_PostIdOrderByCreatedAt(postId);
+    }
+    public int getUserCommentCount(Member member){
+        return commentRepository.countCommentsByMember(member);
     }
 }

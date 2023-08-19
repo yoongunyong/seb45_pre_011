@@ -1,5 +1,6 @@
 package com.example.seb45pre011.post;
 
+import com.example.seb45pre011.member.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,5 +45,9 @@ public class PostServiceImpl implements PostService {
   @Override
   public List<Post> getAllPosts() {
     return postRepository.findAll();
+  }
+
+  public int getUserPostCount(Member member) {
+    return postRepository.countPostsByMember(member);
   }
 }

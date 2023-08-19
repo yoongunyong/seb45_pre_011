@@ -1,5 +1,9 @@
 package com.example.seb45pre011.comment;
 
+import com.example.seb45pre011.exception.BusinessLogicException;
+import com.example.seb45pre011.exception.ExceptionCode;
+import com.example.seb45pre011.member.Member;
+import com.example.seb45pre011.member.MemberService;
 import com.example.seb45pre011.post.Post;
 import com.example.seb45pre011.post.PostService;
 import org.springframework.http.HttpHeaders;
@@ -19,21 +23,27 @@ public class CommentController {
     private final CommentService commentService;
     private final PostService postService;
     private final CommentMapper mapper;
+    private final MemberService memberService;
 
-    public CommentController(CommentService commentService, PostService postService, CommentMapper mapper) {
+    public CommentController(CommentService commentService, PostService postService, CommentMapper mapper, MemberService memberService) {
         this.commentService = commentService;
         this.postService = postService;
         this.mapper = mapper;
+        this.memberService = memberService;
     }
 
     @PostMapping
-    public ResponseEntity postComment(
+    public ResponseEntity<CommentDto.Response> postComment(
             @PathVariable("post-id") Long postId,
             @RequestBody CommentDto.PostDto postDto){
+        Member author = memberService.getUserByAuthentication();
+        System.out.println("아이디: "+author.getUserId());
         // 존재하는 post인지 확인
         Post post = postService.getPostById(postId);
-        Comment comment = commentService.createComment(post,mapper.commentPostDtoToComment(postDto));
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.commentToResponseDTO(comment));
+        if(post == null)
+            throw new BusinessLogicException(ExceptionCode.POST_NOT_FOUND);
+        Comment comment = commentService.createComment(author,post,mapper.commentPostDtoToComment(postDto));
+        return new ResponseEntity<>(mapper.commentToResponseDTO(comment),HttpStatus.CREATED);
     }
 
     @PatchMapping("/{comment-id}")
@@ -51,10 +61,15 @@ public class CommentController {
         TODO 받은 사용자 정보와 comments 테이블에 저장되어 있는 userId를 비교
         TODO 검증되면 로직 진행, 검증 실패 -> 권한없음 에러
         TODO 댓글 수정 시 userId를 DB에 저장 후, 응답 바디에 반환 */
-
+        Member author = memberService.getUserByAuthentication();
         Comment updatedComment = commentService.updateComment(commentId,mapper.commentPatchDtoToComment(patchDto));
+        if (updatedComment.getMember().getUserId() != author.getUserId()){
+            // 아디가 맞지 않아도 관리자인 경우 통과
+            if (!author.getRoles().get(0).equals("ADMIN"))
+                return new ResponseEntity<>("You don't have permission to update this comment.", HttpStatus.UNAUTHORIZED);
+        }
         // 댓글의 post_id와 주어진 postId를 비교하여 검증합니다.
-        if (updatedComment.getPost().getPostId() != postId) {
+        if (updatedComment.getPost().getPostId() != postId ) {
             return new ResponseEntity<>("You don't have permission to update this comment.", HttpStatus.FORBIDDEN);
         }
         // 변경된 댓글을 저장하고 업데이트된 댓글을 반환합니다.
@@ -89,14 +104,21 @@ public class CommentController {
     }
 
     @DeleteMapping("/{comment-id}")
-    public ResponseEntity deleteComment(
+    public ResponseEntity<String> deleteComment(
             @PathVariable("post-id") Long postId,
             @PathVariable("comment-id") Long commentId){
         // TODO 글을 작성한 유저 or 관리자인지 판별 후 로직 진행
+        Member author = memberService.getUserByAuthentication();
+
         // 일치 x -> 권한 없음
         // 일단 존재하는 comment인지 부터 확인
         Comment existingComment = commentService.findVerifiedComment(commentId);
-
+        //아이디가 맞지 않으면
+        if (existingComment.getMember().getUserId() != author.getUserId()){
+            // 아디가 맞지 않아도 관리자인 경우 통과
+            if (!author.getRoles().get(0).equals("ADMIN"))
+                return new ResponseEntity<>("You don't have permission to delete this comment.", HttpStatus.UNAUTHORIZED);
+        }
         // 댓글의 post_id와 주어진 postId를 비교하여 검증합니다.
         if (existingComment.getPost().getPostId() != postId) {
             return new ResponseEntity<>("You don't have permission to delete this comment.", HttpStatus.FORBIDDEN);

@@ -1,5 +1,6 @@
 package com.example.seb45pre011.comment;
 
+import com.example.seb45pre011.member.Member;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,4 +12,6 @@ public interface CommentRepository extends JpaRepository<Comment,Long> {
     List<Comment> findCommentsByPost_PostIdAndCommentIdGreaterThan(
             Long postId, Long commentId, Pageable pageable);
     List<Comment> findByPost_PostIdOrderByCommentId(Long postId,Pageable pageable);
+
+    int countCommentsByMember(Member member);
 }

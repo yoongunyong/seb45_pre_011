@@ -10,5 +10,6 @@ public interface CommentMapper {
 
     //@Mapping(target = "memberId", source = "member.userId")
     @Mapping(target = "postId", source = "post.postId")
+    @Mapping(target = "userId", source = "member.userId")
     CommentDto.Response commentToResponseDTO(Comment comment);
 }
