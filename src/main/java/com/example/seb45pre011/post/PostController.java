@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
+
 public class PostController {
   @Autowired
   private PostService postService;

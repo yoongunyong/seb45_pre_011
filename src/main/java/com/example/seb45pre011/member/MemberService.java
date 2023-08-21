@@ -10,25 +10,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
-@Slf4j
 public class MemberService {
 
     private  MemberRepository repository;
     private  PasswordEncoder passwordEncoder;
     private  JwtProvider jwtProvider;
+    private TokenBlackList blackList;
 
-    public MemberService(MemberRepository repository, PasswordEncoder passwordEncoder, JwtProvider jwtProvider){
+    public MemberService(MemberRepository repository, PasswordEncoder passwordEncoder, JwtProvider jwtProvider,TokenBlackList blackList){
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
+        this.blackList = blackList;
+
     }
-
-
-
-
-
     public Member createMember(Member member){
         verifyExist(member.getEmail());
         String password = passwordEncoder.encode(member.getPassword());
@@ -43,7 +41,8 @@ public class MemberService {
         Optional<Member> findMember = repository.findByEmail(member.getEmail());
         Member existMember = findMember.orElseThrow(() -> new IllegalArgumentException("가입되지 않은 아이디 입니다."));
         if (passwordEncoder.matches(member.getPassword(), existMember.getPassword())) {
-            return jwtProvider.createToken(member.getEmail(), member.getRoles());
+            String createToken = jwtProvider.createToken(member.getEmail(), member.getRoles());
+            return createToken;
 
         } else {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
@@ -51,9 +50,10 @@ public class MemberService {
     }
 
     public void logoutMember(String accessToken){
-        SecurityContextHolder.clearContext();
-        redisUtil
+        blackList.addBlackList(accessToken);
     }
+
+
 
     public Member findMemberByEmail(String email){
         Optional<Member> optionalMember = repository.findByEmail(email);

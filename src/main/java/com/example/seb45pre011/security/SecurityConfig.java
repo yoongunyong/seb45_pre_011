@@ -1,6 +1,7 @@
 package com.example.seb45pre011.security;
 
 //import com.example.seb45pre011.member.CustomOAuth2UserService;
+import com.example.seb45pre011.member.TokenBlackList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,10 +32,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private  CustomOAuth2UserService customOAuth2UserService;
     private  JwtProvider jwtProvider;
+    private TokenBlackList tokenBlackList;
 
     public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,JwtProvider jwtProvider){
         this.customOAuth2UserService = customOAuth2UserService;
         this.jwtProvider = jwtProvider;
+
     }
 
     @Bean
@@ -72,7 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider,tokenBlackList), UsernamePasswordAuthenticationFilter.class);
 //        http
 //
 //                .cors().disable()

@@ -18,24 +18,24 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class MemberController {
 
-    private  MemberMapper mapper;
-    private  MemberService service;
+    private MemberMapper mapper;
+    private MemberService service;
     private JwtProvider jwtProvider;
 
-    public MemberController(MemberMapper mapper, MemberService service, JwtProvider jwtProvider){
+    public MemberController(MemberMapper mapper, MemberService service, JwtProvider jwtProvider) {
         this.mapper = mapper;
         this.service = service;
         this.jwtProvider = jwtProvider;
     }
 
     @PostMapping("/users/signup")
-    public ResponseEntity postMember(@RequestBody MemberDto.Post postDto){
+    public ResponseEntity postMember(@RequestBody MemberDto.Post postDto) {
         Member saveMember = service.createMember(mapper.memberPostDtoToMember(postDto));
         return new ResponseEntity(saveMember.getNick(), HttpStatus.CREATED);
     }
 
     @PostMapping("/users/login")
-    public ResponseEntity loginMember(@RequestBody MemberDto.Login loginDto){
+    public ResponseEntity loginMember(@RequestBody MemberDto.Login loginDto) {
         String jwtToken = service.loginMember(mapper.memberloginDtoToMember(loginDto));
 //        HttpHeaders headers = new HttpHeaders();
 //        headers.add("X-AUTH-TOKEN", "Bearer " + jwtToken);
@@ -45,34 +45,32 @@ public class MemberController {
     }
 
     @PostMapping("/users/findpassword")
-    public ModelAndView findPassword(@RequestParam("email")String email, @RequestParam("username")String username){
+    public ModelAndView findPassword(@RequestParam("email") String email, @RequestParam("username") String username) {
         Member member = new Member();
         member.setEmail(email);
         member.setUsername(username);
         Member findMember = service.findPassword(member);
         ModelAndView modelAndView = new ModelAndView("users/reset.html");
-        modelAndView.addObject("member",member);
+        modelAndView.addObject("member", member);
 
         return modelAndView;
     }
 
     @PostMapping("/users/password/reset")
-    public ResponseEntity resetPassword(@RequestParam("email")String email,@RequestParam("password")String password){
+    public ResponseEntity resetPassword(@RequestParam("email") String email, @RequestParam("password") String password) {
         Member member = new Member();
         member.setEmail(email);
         member.setPassword(password);
         Member saveMember = service.resetPassword(member);
-        return new ResponseEntity(saveMember.getNick(),HttpStatus.OK);
+        return new ResponseEntity(saveMember.getNick(), HttpStatus.OK);
 
     }
 
     @PatchMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request){
         String accessToken = jwtProvider.resolveToken(request);
-        service
-
-
-
+        service.logoutMember(accessToken);
+        return ResponseEntity.ok("logout successs!!");
     }
 
 }

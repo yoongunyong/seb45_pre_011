@@ -1,20 +1,20 @@
 package com.example.seb45pre011.member;
 
-import com.example.seb45pre011.member.MemberDto.login;
-import com.example.seb45pre011.member.MemberDto.post;
+import com.example.seb45pre011.member.MemberDto.Login;
+import com.example.seb45pre011.member.MemberDto.Post;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-18T16:41:47+0900",
+    date = "2023-08-20T18:55:01+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.19 (Azul Systems, Inc.)"
 )
 @Component
 public class MemberMapperImpl implements MemberMapper {
 
     @Override
-    public Member memberPostDtoToMember(post postDto) {
+    public Member memberPostDtoToMember(Post postDto) {
         if ( postDto == null ) {
             return null;
         }
@@ -32,7 +32,7 @@ public class MemberMapperImpl implements MemberMapper {
     }
 
     @Override
-    public Member memberloginDtoToMember(login loginDto) {
+    public Member memberloginDtoToMember(Login loginDto) {
         if ( loginDto == null ) {
             return null;
         }
