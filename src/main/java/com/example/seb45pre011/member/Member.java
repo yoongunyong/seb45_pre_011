@@ -66,18 +66,12 @@ public class Member implements UserDetails {
     @Column
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
 
-//    private String provider;
-//
-//    private String providerId;
-
-//    @Enumerated(EnumType.STRING)
-//    private SocialType socialType;
 
     public void setRoles(String email){
-//        if(email.equals()){   //관리자 계정 이메일 넣으면 됨.
-//            roles.add("USER");
-//            roles.add("ADMIN");
-//        }
+        if(email.equals("admin@naver.com")){   //관리자 계정 이메일 넣으면 됨.
+            roles.add("USER");
+            roles.add("ADMIN");
+        }
         roles.add("USER");
     }
     @Override   //사용자의 권한 목록 리턴
@@ -124,17 +118,7 @@ public class Member implements UserDetails {
             this.status = status;
         }
     }
-//
-//    public enum SocialType{
-//        GOOGLE_LOGIN("구굴"),
-//        GITHUB_LOGIN("깃허브");
-//
-//        @Getter
-//        public final String socialType;
-//
-//        SocialType(String social){
-//            this.socialType = social;
-//        }
+
 }
 
 

@@ -54,16 +54,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        /*
+        protected void configure(HttpSecurity http) throws Exception {
+    http
+        .cors().disable() // CORS 설정
+        .csrf().disable() // CSRF 설정
+        .authorizeRequests
+            .antMatchers("//**").hasRole("ADMIN")
+            .antMatchers("/admin/**").hasRole("ADMIN") // ADMIN 역할을 가진 사용자만 접근 허용
+            .antMatchers("/user/**").hasAnyRole("ADMIN", "USER") // ADMIN 또는 USER 역할을 가진 사용자만 접근 허용
+            .anyRequest().authenticated() // 나머지 요청은 인증 필요
+        .and()
+        .logout()
+            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+            .logoutSuccessHandler(logoutSuccessHandler())
+            .addLogoutHandler(logoutHandler())
+            .permitAll()
+        .and()
+        .headers().frameOptions().sameOrigin() // H2 콘솔을 사용할 경우, X-Frame-Options 설정
+        .and()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 관리 정책 설정
+        .and()
+        .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, tokenBlackList), UsernamePasswordAuthenticationFilter.class);
+}
+         */
         http
                 .cors().disable()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/h2/**").permitAll()
                 .anyRequest().permitAll()
-                .and()
-                .oauth2Login()
-                .loginPage("/loginForm")
-                .defaultSuccessUrl("/")
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -76,29 +97,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider,tokenBlackList), UsernamePasswordAuthenticationFilter.class);
-//        http
-//
-//                .cors().disable()
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/h2/**").permitAll()// H2 데이터베이스 콘솔 접근 허용
-//                .anyRequest().permitAll()
-//                .and()
-//                .oauth2Login()
-//                .loginPage("/loginForm")
-//                .defaultSuccessUrl("/")
-//                .userInfoEndpoint()
-//                .userService(customOAuth2UserService).and().and().build();
-//
-//        http.headers().frameOptions().sameOrigin()
-//
-//                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
-
-
-
 
     }
     @Bean
@@ -111,14 +109,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new SecurityContextLogoutHandler();
     }
 
-    @Bean
-    public ClientRegistrationRepository clientRegistrationRepository() {
-        // OAuth 2.0 클라이언트 등록 정보를 설정하여 반환하는 코드를 작성
-        // 예시: InMemoryClientRegistrationRepository 또는 다른 구현체 사용
-        return new InMemoryClientRegistrationRepository(Arrays.asList(
-                // 클라이언트 등록 정보들을 정의
-        ));
-    }
+
 
     @Override
     public void configure (WebSecurity web) throws Exception {

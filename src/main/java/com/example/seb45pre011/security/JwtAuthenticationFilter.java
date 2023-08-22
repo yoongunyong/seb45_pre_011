@@ -40,13 +40,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             throw new BusinessLogicException(ExceptionCode.STATUS_NOT_LOGIN);
 
         }
-
-
-
-//        if(token != null && jwtProvider.validateToken(token)){
-//            Authentication authentication = jwtProvider.getAuthentication(token);
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//        }
         chain.doFilter(request,response);
 
     }
